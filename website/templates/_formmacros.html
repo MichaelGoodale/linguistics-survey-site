@@ -1,0 +1,4 @@
+{% macro render_recorder(recorder) %}
+<input type="button" onclick="record_audio({{ recorder }})" value="Record {{ recorder }}"></input>
+  <input type="button" id="stop-{{ recorder }}" value="Stop {{ recorder }}"></input>
+{% endmacro %}

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Register{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<script type="text/javascript" src="{{ url_for('static', filename='js/audiorecorder.js')}}"></script>
+{% from "_formmacros.html" import render_recorder%}
+<form method="POST" enctype="multipart/form-data">
+  <dl>
+	{{ form.hidden_tag() }}
+	{{ form.name.label }} {{ form.name(size=20) }}
+	<input type="file" id="audio" name="audio" style="display:none">
+	{{ render_recorder(1) }}
+	{{ render_recorder(2) }}
+  </dl>
+  <input type=submit value=Register>
+</form>
+{% endblock %}
