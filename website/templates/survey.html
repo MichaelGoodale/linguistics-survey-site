@@ -11,9 +11,7 @@
   <dl>
 	{{ form.hidden_tag() }}
 	{{ form.name.label }} {{ form.name(size=20) }}
-	<input type="file" id="audio" name="audio" style="display:none">
-	{{ render_recorder(1) }}
-	{{ render_recorder(2) }}
+	{{ render_recorder('audio') }}
   </dl>
   <input type=submit value=Register>
 </form>

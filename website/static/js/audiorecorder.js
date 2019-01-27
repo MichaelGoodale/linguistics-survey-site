@@ -17,8 +17,10 @@ function record_audio(recording) {
 		}
 		mediaRecorder.onstop = function(e) {
 			console.log(`recording:${recording} stopped`);
-			console.log(recording);
-			console.log(chunks);
+
+			//const objectURL = window.URL.createObjectURL(new Blob(chunks, {type: "audio/ogg"}));
+			let file_object = document.getElementById(`file-${recording}`);
+			file_object.value = objectURL;
 			is_recording = false;
 		}
 		mediaRecorder.ondataavailable = function (e) {
