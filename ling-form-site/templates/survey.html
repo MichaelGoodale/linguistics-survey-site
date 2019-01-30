@@ -9,8 +9,6 @@
 {% from "_formmacros.html" import render_recorder%}
 <form method="POST" enctype="multipart/form-data">
   <dl>
-	{{ form.hidden_tag() }}
-	{{ form.name.label }} {{ form.name(size=20) }}
 	{{ render_recorder('audio') }}
   </dl>
   <input type=submit value=Register>
