@@ -15,16 +15,15 @@ class LinguisticForm(FlaskForm):
 
 @app.route('/')
 def index():
-    return render_template("index.html")
+    return render_template('index.html')
 
-@app.route('/survey', methods=["GET", "POST"])
+@app.route('/survey', methods=['GET', 'POST'])
 def survey():
     form = LinguisticForm()
     if form.validate_on_submit():
-        f = form.audio.data
-        filename = secure_filename(f.filename)
-        f.save(os.path.join(
-            app.instance_path, 'audio_files', filename
-        ))
         return redirect(url_for('index'))
     return render_template('survey.html', form=form)
+
+@app.route('/upload_audio/<uuid:user>/<recording>', methods=['POST'])
+def upload_audio(user, recording):
+    return user
