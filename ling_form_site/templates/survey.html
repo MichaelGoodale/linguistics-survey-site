@@ -6,10 +6,12 @@
 
 {% block content %}
 <script type="text/javascript" src="{{ url_for('static', filename='js/audiorecorder.js')}}"></script>
-{% from "_formmacros.html" import render_recorder%}
+{% from "_formmacros.html" import render_recorder, render_field%}
 <form method="POST" enctype="multipart/form-data">
   <dl>
-	{{ render_recorder('audio') }}
+    {% for field in form%}
+      {{ render_field(field) }}
+    {% endfor %}
   </dl>
   <input type=submit value=Register>
 </form>

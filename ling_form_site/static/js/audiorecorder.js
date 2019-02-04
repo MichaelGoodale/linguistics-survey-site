@@ -13,7 +13,6 @@ function upload_file(file, file_id) {
 	const formData = new FormData();
 	formData.append("recording", file);
 	xhr.open('POST', `http://localhost:5000/upload_audio/${file_id}`);
-	xhr.overrideMimeType('text/plain; charset=x-user-defined-binary');
 	xhr.onload = e => is_uploading = false;
 	xhr.send(formData);
 }

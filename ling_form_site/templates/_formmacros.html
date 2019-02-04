@@ -3,3 +3,20 @@
 <input type="button" onclick="record_audio('{{ recorder }}')" value="Record {{ recorder }}"></input>
 <input type="button" id="stop-{{ recorder }}" value="Stop {{ recorder }}"></input>
 {% endmacro %}
+
+{% macro render_field(field) %}
+  <dt>{{ field.label }}
+  <dd>
+  {{ field(**kwargs)|safe }}
+  {% if field.type  == "HiddenField" %}
+    {{ render_recorder(field.name) }}
+  {% endif %}
+  {% if field.errors %}
+    <ul class=errors>
+    {% for error in field.errors %}
+      <li>{{ error }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+  </dd>
+{% endmacro %}
