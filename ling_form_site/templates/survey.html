@@ -13,6 +13,14 @@
       {{ render_field(field) }}
     {% endfor %}
   </dl>
-  <input type=submit value=Register>
+  {% if page == number_pages -1 %}
+    <input type=submit name="submit" value="Previous page">
+    <input type=submit name="submit" value="Submit">
+  {% elif page == 0 %}
+    <input type=submit name="submit" value="Next page">
+  {% else %}
+    <input type=submit name="submit" value="Previous page">
+    <input type=submit name="submit" value="Next page">
+  {% endif %}
 </form>
 {% endblock %}

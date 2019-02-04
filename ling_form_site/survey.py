@@ -36,7 +36,16 @@ def survey(survey_name, page):
         user = User(session['user_id'])
         db_session.add(user)
         db_session.commit()
-    return render_template('survey.html', form=form[page]())
+    if request.method == 'POST':
+        if request.form["submit"] == "Previous page":
+            return redirect(url_for("survey.survey", survey_name=survey_name, page=page-1))
+        elif request.form["submit"] == "Next page":
+            return redirect(url_for("survey.survey", survey_name=survey_name, page=page+1))
+        elif request.form["submit"] == "Submit":
+            pass
+        else:
+            abort(404)
+    return render_template('survey.html', form=form[page](), page=page, number_pages=len(form))
 
 @bp.route('/upload_audio/<recording>', methods=['POST'])
 def upload_audio(recording):
