@@ -37,4 +37,4 @@ def generate_survey_form(survey_path):
                 raise KeyError(f"Question type {q_type} for {q_name} is not yet implemented")
             setattr(F, q_name, field)
         form_pages.append(F)
-    return form_pages 
+    return form_pages

@@ -1,5 +1,10 @@
 is_recording = false;
 is_uploading = false;
+survey_name = "";
+
+window.onload = () => {
+	survey_name = document.getElementById("survey_name").getAttribute('data-survey_name');
+}
 
 let mediaRecorder = {};
 navigator.mediaDevices.getUserMedia({audio: true, video: false})
@@ -12,7 +17,7 @@ function upload_file(file, file_id) {
 	const xhr = new XMLHttpRequest();
 	const formData = new FormData();
 	formData.append("recording", file);
-	xhr.open('POST', `http://localhost:5000/upload_audio/${file_id}`);
+	xhr.open('POST', `http://localhost:5000/upload_audio/${survey_name}/${file_id}`);
 	xhr.onload = e => is_uploading = false;
 	xhr.send(formData);
 }
