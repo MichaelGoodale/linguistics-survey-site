@@ -36,11 +36,11 @@ def get_survey_response(user, survey_name):
         return None
     survey_response = db_session.query(SurveyResponse).filter((SurveyResponse.user_id == user.uuid) & (SurveyResponse.survey_id == survey.id)).first()
     if survey_response is None:
-        #Construct response if it's not there
         survey_response = json.loads(survey.survey)
         for page in survey_response["pages"]:
-            for q in page:
-                q.pop("answers", 0)
+            for q_i, q in enumerate(page):
+                page[q_i] = {"name":q["name"],
+                             "type":q["type"]}
         survey_response = SurveyResponse(json.dumps(survey_response))
         user.responses.append(survey_response)
         survey.responses.append(survey_response)
