@@ -58,10 +58,7 @@ def survey(survey_name, page):
     if form is None or page < 0 or page >= len(form):
         abort(404)
     if request.method == 'GET' and 'user_id' not in session:
-        session['user_id'] = str(uuid1())
-        user = User(session['user_id'])
-        db_session.add(user)
-        db_session.commit()
+        return redirect(url_for("survey.consent", survey_name=survey_name))
 
     survey_form = form[page]()
     user = db_session.query(User).filter(User.uuid == session['user_id']).first()
@@ -91,6 +88,20 @@ def survey(survey_name, page):
 
     return render_template('survey.html', survey_name=survey_name, form=survey_form, \
                                          page=page, number_pages=len(form))
+
+@bp.route('/consent/<survey_name>/', methods=['GET', 'POST'])
+def consent(survey_name):
+    if request.method == 'POST':
+        if "consent" in request.form:
+            if 'user_id' not in session:
+                session['user_id'] = str(uuid1())
+                user = User(session['user_id'])
+                db_session.add(user)
+                db_session.commit()
+            user = db_session.query(User).filter(User.uuid == session['user_id']).first()
+            user.consent.append(survey_name)
+
+    return render_template('consent.html')
 
 @bp.route('/upload_audio/<survey_name>/<recording>', methods=['POST'])
 def upload_audio(survey_name, recording):

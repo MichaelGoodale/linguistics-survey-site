@@ -1,6 +1,7 @@
 import json
 from datetime import datetime
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Text
+from sqlalchemy.types import ARRAY
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.schema import UniqueConstraint
 from .db import Base
@@ -11,6 +12,7 @@ class User(Base):
     uuid = Column(String(36), unique=True, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
     responses = relationship("SurveyResponse", back_populates="user")
+    consent = Column(Array(String))
 
     def __init__(self, uuid):
         self.uuid = uuid
