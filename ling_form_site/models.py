@@ -2,6 +2,7 @@ import json
 from datetime import datetime
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Text
 from sqlalchemy.orm import relationship, backref
+from sqlalchemy.schema import UniqueConstraint
 from .db import Base
 
 class User(Base):
@@ -37,6 +38,7 @@ class SurveyResponse(Base):
     user = relationship("User", back_populates="responses")
     survey_id = Column(Integer, ForeignKey('survey.id'))
     survey = relationship("Survey", back_populates="responses")
+    __table_args__ = (UniqueConstraint('user_id', 'survey_id', name='_survey_user_uc'),)
 
     def __init__(self, response):
         self.response = response

@@ -20,7 +20,7 @@ def get_survey(survey_name):
     survey_path = os.path.join(current_app.instance_path, "surveys", survey_name)
     if not os.path.isfile(survey_path):
         return None
-    surveys[survey_name]= generate_survey_form(survey_path)
+    surveys[survey_name] = generate_survey_form(survey_path)
 
     if db_session.query(Survey).filter(Survey.survey_name == survey_name).first() is None:
         with open(survey_path, "r") as f:
@@ -34,7 +34,8 @@ def get_survey_response(user, survey_name):
     survey = db_session.query(Survey).filter(Survey.survey_name == survey_name).first()
     if survey is None:
         return None
-    survey_response = db_session.query(SurveyResponse).filter((SurveyResponse.user_id == user.uuid) & (SurveyResponse.survey_id == survey.id)).first()
+    survey_response = db_session.query(SurveyResponse).filter(SurveyResponse.user_id == user.id)\
+            .filter(SurveyResponse.survey_id == survey.id).first()
     if survey_response is None:
         survey_response = json.loads(survey.survey)
         for page in survey_response["pages"]:
@@ -61,7 +62,24 @@ def survey(survey_name, page):
         user = User(session['user_id'])
         db_session.add(user)
         db_session.commit()
+
+    survey_form = form[page]()
+    user = db_session.query(User).filter(User.uuid == session['user_id']).first()
+    survey_response = get_survey_response(user, survey_name)
+    response = json.loads(survey_response.response)
+
+    for q in response["pages"][page]:
+      if "answer" in q:
+          getattr(survey_form, q["name"]).data = q["answer"]
+
     if request.method == 'POST':
+        survey_form = form[page](request.form)
+        if survey_form.validate():
+            for q in response["pages"][page]:
+               q["answer"] = getattr(survey_form, q["name"]).data
+
+            survey_response.response = json.dumps(response)
+            db_session.commit()
         if request.form["submit"] == "Previous page":
             return redirect(url_for("survey.survey", survey_name=survey_name, page=page-1))
         elif request.form["submit"] == "Next page":
@@ -70,7 +88,8 @@ def survey(survey_name, page):
             pass
         else:
             abort(404)
-    return render_template('survey.html', survey_name=survey_name, form=form[page](), \
+
+    return render_template('survey.html', survey_name=survey_name, form=survey_form, \
                                          page=page, number_pages=len(form))
 
 @bp.route('/upload_audio/<survey_name>/<recording>', methods=['POST'])

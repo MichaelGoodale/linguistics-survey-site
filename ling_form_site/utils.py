@@ -18,19 +18,19 @@ def generate_survey_form(survey_path):
 
             if q_type == "multiple_choice":
                 q_answers = question["answers"]
-                field = SelectMultipleField(q_text, choices=[(i, x) for i, x in enumerate(q_answers)], \
+                field = SelectMultipleField(q_text, choices=[(str(i), str(x)) for i, x in enumerate(q_answers)], \
                         option_widget=CheckboxInput(),
                         widget=ListWidget(prefix_label=False))
             elif q_type == "single_choice":
                 q_answers = question["answers"]
-                field = RadioField(q_text, choices=[(i, x) for i, x in enumerate(q_answers)])
+                field = RadioField(q_text, choices=[(str(i), str(x)) for i, x in enumerate(q_answers)])
             elif q_type == "string":
                 field = StringField(q_text)
             elif q_type == "textbox":
                 field = TextAreaField(q_text)
             elif q_type == "dropdown":
                 q_answers = question["answers"]
-                field = SelectField(q_text, choices=[(i, x) for i, x in enumerate(q_answers)])
+                field = SelectField(q_text, choices=[(str(i), str(x)) for i, x in enumerate(q_answers)])
             elif q_type == "recording":
                 field = HiddenField(q_text)
             else:
