@@ -55,13 +55,19 @@ def index():
 @bp.route('/survey/<survey_name>/<int:page>', methods=['GET', 'POST'])
 def survey(survey_name, page):
     form = get_survey(survey_name)
+
     if form is None or page < 0 or page >= len(form):
         abort(404)
+
     if request.method == 'GET' and 'user_id' not in session:
         return redirect(url_for("survey.consent", survey_name=survey_name))
 
-    survey_form = form[page]()
     user = db_session.query(User).filter(User.uuid == session['user_id']).first()
+
+    if user == None or survey_name not in user.consent.split(","):
+        return redirect(url_for("survey.consent", survey_name=survey_name))
+
+    survey_form = form[page]()
     survey_response = get_survey_response(user, survey_name)
     response = json.loads(survey_response.response)
 
@@ -82,12 +88,16 @@ def survey(survey_name, page):
         elif request.form["submit"] == "Next page":
             return redirect(url_for("survey.survey", survey_name=survey_name, page=page+1))
         elif request.form["submit"] == "Submit":
-            pass
+            return redirect(url_for("survey.success"))
         else:
             abort(404)
 
     return render_template('survey.html', survey_name=survey_name, form=survey_form, \
                                          page=page, number_pages=len(form))
+
+@bp.route('/success')
+def success():
+    return render_template('success.html')
 
 @bp.route('/consent/<survey_name>/', methods=['GET', 'POST'])
 def consent(survey_name):
@@ -99,8 +109,9 @@ def consent(survey_name):
                 db_session.add(user)
                 db_session.commit()
             user = db_session.query(User).filter(User.uuid == session['user_id']).first()
-            user.consent.append(survey_name)
-
+            user.consent += survey_name+','
+            db_session.commit()
+            return redirect(url_for("survey.survey", survey_name=survey_name, page=0))
     return render_template('consent.html')
 
 @bp.route('/upload_audio/<survey_name>/<recording>', methods=['POST'])
