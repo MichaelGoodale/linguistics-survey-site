@@ -13,6 +13,12 @@ from .utils import generate_survey_form
 bp = Blueprint('survey', __name__)
 surveys = {}
 
+def create_user():
+    session['user_id'] = str(uuid1())
+    user = User(session['user_id'])
+    db_session.add(user)
+    db_session.commit()
+
 def get_survey(survey_name):
     if survey_name in surveys:
         return surveys[survey_name]
@@ -79,7 +85,9 @@ def survey(survey_name, page):
         survey_form = form[page](request.form)
         if survey_form.validate():
             for q in response["pages"][page]:
-               q["answer"] = getattr(survey_form, q["name"]).data
+                if q["type"] == "recording":
+                    continue
+                q["answer"] = getattr(survey_form, q["name"]).data
 
             survey_response.response = json.dumps(response)
             db_session.commit()
@@ -104,11 +112,15 @@ def consent(survey_name):
     if request.method == 'POST':
         if "consent" in request.form:
             if 'user_id' not in session:
-                session['user_id'] = str(uuid1())
-                user = User(session['user_id'])
-                db_session.add(user)
-                db_session.commit()
+                create_user()
+
             user = db_session.query(User).filter(User.uuid == session['user_id']).first()
+
+            if user is None:
+                #This happens if sessions aren't erased after db reset
+                create_user()
+                user = db_session.query(User).filter(User.uuid == session['user_id']).first()
+
             user.consent += survey_name+','
             db_session.commit()
             return redirect(url_for("survey.survey", survey_name=survey_name, page=0))
@@ -117,8 +129,8 @@ def consent(survey_name):
 @bp.route('/upload_audio/<survey_name>/<recording>', methods=['POST'])
 def upload_audio(survey_name, recording):
     user = db_session.query(User).filter(User.uuid == session['user_id']).first()
+
     if user is None:
-        raise ValueError("No u")
         abort(404)
 
     survey_response = get_survey_response(user, survey_name)
@@ -138,7 +150,6 @@ def upload_audio(survey_name, recording):
             break
 
     if not found:
-        raise ValueError("No q")
         abort(404)
         #That isn't a q of survey_name
 

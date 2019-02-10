@@ -1,7 +1,8 @@
 {% macro render_recorder(recorder) %}
-<input type="file" id="{{ recorder }}" name="{{ recorder }}" style="display:none"></input>
-<input type="button" onclick="record_audio('{{ recorder }}')" value="Record {{ recorder }}"></input>
-<input type="button" id="stop-{{ recorder }}" value="Stop {{ recorder }}"></input>
+<div id="{{ recorder.name }}-finished" style="display:{{ '' if recorder.data is not none else 'none' }}">
+	(Recorded)
+</div>
+<input type="button" id="{{ recorder.name }}-button" onclick="record_audio('{{ recorder.name }}')" value="Record"></input>
 {% endmacro %}
 
 {% macro render_field(field) %}
@@ -9,7 +10,7 @@
   <dd>
   {{ field(**kwargs)|safe }}
   {% if field.type  == "HiddenField" %}
-    {{ render_recorder(field.name) }}
+    {{ render_recorder(field) }}
   {% endif %}
   {% if field.errors %}
     <ul class=errors>

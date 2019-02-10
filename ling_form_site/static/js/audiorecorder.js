@@ -10,6 +10,7 @@ let mediaRecorder = {};
 navigator.mediaDevices.getUserMedia({audio: true, video: false})
     .then(stream => {
 	    mediaRecorder = new MediaRecorder(stream);
+	    mediaRecorder.mimeType = 'audio/wav'
     });
 
 function upload_file(file, file_id) {
@@ -29,27 +30,37 @@ function record_audio(recording) {
 
 	if (!(mediaRecorder instanceof MediaRecorder)){
 		is_recording = false;
-		console.log("Please enable media recorder");
+		alert("Please enable media recorder and refresh the page");
 		return false;
 	}
 
 	is_recording = true;
 
-	let stop_button = document.getElementById(`stop-${recording}`);
+	let button = document.getElementById(`${recording}-button`);
+	button.value = "Finish recording";
+	button.style.background = "red";
 	let chunks = [];
 	mediaRecorder.start();
-	console.log(`recording:${recording} started`);
+	
 
-	stop_button.onclick = function () {
+	button.onclick = function () {
 		mediaRecorder.stop()
+		button.style.background = "";
+		button.value = "Record";
+		button.onclick = function() {
+			record_audio(recording);
+		}
 	}
 
 	mediaRecorder.onstop = function(e) {
 		console.log(`recording:${recording} stopped`);
-		const buffer = new Blob(chunks);
+		const buffer = new Blob(chunks, { 'type' : 'audio/wav' });
 		upload_file(buffer, recording);
+		let recorded = document.getElementById(`${recording}-finished`);
+		recorded.style.display = "";
 		is_recording = false;
 	}
+
 	mediaRecorder.ondataavailable = function (e) {
 		chunks.push(e.data);
 	}
