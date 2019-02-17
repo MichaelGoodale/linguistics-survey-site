@@ -1,10 +1,10 @@
-is_recording = false;
-is_uploading = false;
-survey_name = "";
+let is_recording = false;
+let is_uploading = false;
+let survey_name = "";
 
 window.onload = () => {
 	survey_name = document.getElementById("survey_name").getAttribute('data-survey_name');
-}
+};
 
 let mediaRecorder = {};
 navigator.mediaDevices.getUserMedia({audio: true, video: false})
@@ -18,8 +18,8 @@ function upload_file(file, file_id) {
 	const xhr = new XMLHttpRequest();
 	const formData = new FormData();
 	formData.append("recording", file);
-	xhr.open('POST', `http://localhost:5000/upload_audio/${survey_name}/${file_id}`);
-	xhr.onload = e => is_uploading = false;
+	xhr.open("POST", `http://localhost:5000/upload_audio/${survey_name}/${file_id}`);
+	xhr.onload = () => is_uploading = false;
 	xhr.send(formData);
 }
 
@@ -43,25 +43,25 @@ function record_audio(recording) {
 	mediaRecorder.start();
 	
 
-	button.onclick = function () {
-		mediaRecorder.stop()
+	button.addEventListener("click", () => {
+		mediaRecorder.stop();
 		button.style.background = "";
 		button.value = "Record";
-		button.onclick = function() {
+		button.onclick = () => {
 			record_audio(recording);
 		}
-	}
+	});
 
-	mediaRecorder.onstop = function(e) {
+	mediaRecorder.addEventListener("stop", () => {
 		console.log(`recording:${recording} stopped`);
-		const buffer = new Blob(chunks, { 'type' : 'audio/wav' });
+		const buffer = new Blob(chunks, { "type" : "audio/wav" });
 		upload_file(buffer, recording);
 		let recorded = document.getElementById(`${recording}-finished`);
 		recorded.style.display = "";
 		is_recording = false;
-	}
+	});
 
-	mediaRecorder.ondataavailable = function (e) {
+	mediaRecorder.addEventListener("dataavailable", e => {
 		chunks.push(e.data);
-	}
+	});
 }
