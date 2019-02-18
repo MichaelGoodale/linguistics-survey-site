@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>{% block title %} statement of informed consent to participate in research {% endblock %}</h1>
+    <h2>{% block title %} statement of informed consent to participate in research {% endblock %}</h2>
 {% endblock %}
 
 {% block content %}
@@ -28,7 +28,12 @@ I, the undersigned, understand that:
 	
 
 <form method="POST">
-	<input type="checkbox" name="consent" value="consented"> I certify that I have read and understood the foregoing terms and conditions and that I agree to participate, in accordance with them, in the above-named study.  </br>
+    <label for="consent">
+        <input type="checkbox" name="consent" id="consent" value="consented">
+        I certify that I have read and understood the foregoing terms and conditions and that I agree to participate,
+        in accordance with them, in the above-named study.
+    </label>
+    <br>
 	<input type=submit name="submit" value="Continue">
 </form>
 {% endblock %}
