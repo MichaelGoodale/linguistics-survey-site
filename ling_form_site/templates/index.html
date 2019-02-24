@@ -5,6 +5,9 @@
 {% endblock %}
 
 {% block content %}
+<p>
+This website contains various linguistic surveys that can be completed in order to help scientific understanding of language.
+</p>
 <ul>
     {% for survey, survey_link_name in surveys %}
 	<li><a href="{{url_for('survey.survey', survey_name=survey, page=0)}}">{{ survey_link_name }}</a></li>
