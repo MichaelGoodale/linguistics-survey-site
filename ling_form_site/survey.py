@@ -75,6 +75,8 @@ def survey(survey_name, page):
 
     survey_form = form[page]()
     survey_response = get_survey_response(user, survey_name)
+    if survey_response.completed:
+        return redirect(url_for("survey.success", survey_name=survey_name))
     response = json.loads(survey_response.response)
 
     for q in response["pages"][page]:
@@ -96,14 +98,18 @@ def survey(survey_name, page):
             elif request.form["submit"] == "Next page":
                 return redirect(url_for("survey.survey", survey_name=survey_name, page=page+1))
             elif request.form["submit"] == "Submit":
-                return redirect(url_for("survey.success"))
+                return redirect(url_for("survey.success", survey_name=survey_name))
             else:
                 abort(404)
     return render_template('survey.html', survey_name=survey_name, form=survey_form, \
                                          page=page, number_pages=len(form))
 
-@bp.route('/success')
-def success():
+@bp.route('/success/<survey_name>')
+def success(survey_name):
+    user = db_session.query(User).filter(User.uuid == session['user_id']).first()
+    survey_response = get_survey_response(user, survey_name)
+    survey_response.completed = True
+    db_session.commit()
     return render_template('success.html')
 
 @bp.route('/consent/<survey_name>/', methods=['GET', 'POST'])

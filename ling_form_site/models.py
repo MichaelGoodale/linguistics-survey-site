@@ -1,6 +1,6 @@
 import json
 from datetime import datetime
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Text
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Text, Boolean
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.schema import UniqueConstraint
 from .db import Base
@@ -38,6 +38,7 @@ class SurveyResponse(Base):
     response = Column(Text)
     user_id = Column(Integer, ForeignKey('user.id'))
     created_at = Column(DateTime, default=datetime.utcnow)
+    completed = Column(Boolean, default=False)
     submitted_at = Column(DateTime)
     user = relationship("User", back_populates="responses")
     survey_id = Column(Integer, ForeignKey('survey.id'))
