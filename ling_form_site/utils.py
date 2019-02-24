@@ -42,7 +42,7 @@ def generate_survey_form(survey_path):
                 field = TextAreaField(q_text, validators_to_use)
             elif q_type == "dropdown":
                 q_answers = question["answers"]
-                field = SelectField(q_text, validators_to_use, choices=[(str(i), str(x)) for i, x in enumerate(q_answers)])
+                field = SelectField(q_text, validators_to_use, choices=[(None, '')]+[(str(i), str(x)) for i, x in enumerate(q_answers)])
             elif q_type == "recording":
                 field = HiddenField(q_text)
             else:
