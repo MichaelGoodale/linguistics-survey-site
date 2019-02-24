@@ -91,15 +91,14 @@ def survey(survey_name, page):
 
             survey_response.response = json.dumps(response)
             db_session.commit()
-        if request.form["submit"] == "Previous page":
-            return redirect(url_for("survey.survey", survey_name=survey_name, page=page-1))
-        elif request.form["submit"] == "Next page":
-            return redirect(url_for("survey.survey", survey_name=survey_name, page=page+1))
-        elif request.form["submit"] == "Submit":
-            return redirect(url_for("survey.success"))
-        else:
-            abort(404)
-
+            if request.form["submit"] == "Previous page":
+                return redirect(url_for("survey.survey", survey_name=survey_name, page=page-1))
+            elif request.form["submit"] == "Next page":
+                return redirect(url_for("survey.survey", survey_name=survey_name, page=page+1))
+            elif request.form["submit"] == "Submit":
+                return redirect(url_for("survey.success"))
+            else:
+                abort(404)
     return render_template('survey.html', survey_name=survey_name, form=survey_form, \
                                          page=page, number_pages=len(form))
 
