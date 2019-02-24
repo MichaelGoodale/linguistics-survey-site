@@ -3,6 +3,11 @@ import json
 from wtforms import Form, RadioField, SelectMultipleField, SelectField, TextAreaField, HiddenField, StringField, IntegerField, validators
 from wtforms.widgets import CheckboxInput, ListWidget
 
+def get_survey_name(survey_path):
+    with open(survey_path, "r") as f:
+        survey = json.load(f)
+    return survey["name"]
+
 def generate_survey_form(survey_path):
     with open(survey_path, "r") as f:
         survey = json.load(f)

@@ -8,7 +8,7 @@ from uuid import uuid1
 
 from .db import db_session
 from .models import User, Survey, SurveyResponse
-from .utils import generate_survey_form
+from .utils import generate_survey_form, get_survey_name
 
 bp = Blueprint('survey', __name__)
 surveys = {}
@@ -56,7 +56,9 @@ def get_survey_response(user, survey_name):
 
 @bp.route('/')
 def index():
-    return render_template('index.html')
+    surveys = sorted(os.listdir(os.path.join(current_app.instance_path, "surveys")))
+    surveys = [(x, get_survey_name(os.path.join(current_app.instance_path, "surveys", x))) for x in surveys]
+    return render_template('index.html', surveys=surveys)
 
 @bp.route('/survey/<survey_name>/<int:page>', methods=['GET', 'POST'])
 def survey(survey_name, page):

@@ -1,21 +1,13 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>{% block title %}Register{% endblock %}</h1>
+  <h1>{% block title %}Home{% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
-<p>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce id massa eu ante sollicitudin malesuada. Nulla gravida sollicitudin purus, at feugiat neque cursus a. Sed lacinia velit nunc, eget posuere lorem pharetra id. Curabitur sodales, ligula at laoreet consequat, enim augue porttitor ex, eget eleifend leo risus ac eros. Quisque a erat at est fringilla malesuada sed posuere orci. Proin sapien tortor, feugiat sed eleifend et, pharetra nec sem. Praesent lacus justo, vulputate sit amet ornare a, posuere porttitor orci. Praesent elementum dui nec tempus laoreet. Nulla in nunc porta, interdum justo et, pharetra ex. Nam quis neque sit amet sapien molestie rutrum. Nullam accumsan in dui eu luctus.
-
-Sed egestas massa et tortor mollis egestas. Praesent mollis malesuada magna, vel volutpat metus ullamcorper eget. Donec mattis quis enim id euismod. Quisque tristique lectus sapien, at consequat magna mattis non. Mauris sodales risus felis. Suspendisse gravida et augue vel auctor. Nunc placerat massa quis nulla viverra facilisis. Nam eu finibus lorem.
-
-Aliquam nec mauris vitae purus vestibulum fringilla nec ut mauris. Ut lorem lorem, condimentum sit amet felis et, sodales lobortis massa. Praesent fringilla nisi in est egestas, in facilisis nisl efficitur. Maecenas vitae velit gravida, consequat lorem sit amet, semper felis. Mauris ultricies a quam cursus fermentum. In malesuada id sapien eget cursus. Nulla vel mi consectetur, vestibulum erat vitae, posuere magna. Nullam consequat orci et lacinia pulvinar. Aenean erat est, laoreet nec viverra at, semper ut erat. Sed laoreet turpis ut tellus pharetra, vel dignissim ante rutrum. Sed enim lectus, congue sit amet ligula et, consectetur tristique velit. Proin in eros laoreet, sodales dolor sit amet, posuere risus. Phasellus egestas bibendum nulla. Proin ornare eu massa ut accumsan. Etiam turpis arcu, placerat sed vulputate vitae, dictum ut justo. Nullam feugiat sagittis enim quis venenatis.
-
-Cras hendrerit sagittis neque, et mollis nunc vehicula in. Sed vel cursus ipsum. Nulla facilisi. Suspendisse tristique ex vitae cursus ornare. Donec id commodo velit, pulvinar eleifend ligula. Praesent elementum imperdiet ex, a interdum turpis tincidunt at. In pellentesque ex lorem, id ultrices elit consequat at. Nunc commodo neque tincidunt, sollicitudin est eget, efficitur sem. Pellentesque euismod ipsum vitae velit posuere elementum. Suspendisse eu euismod erat, vitae aliquet urna. Proin egestas nec odio venenatis laoreet. Morbi quis pharetra purus.
-
-Nam enim nulla, aliquam eget scelerisque in, vulputate nec nisl. Aliquam erat volutpat. Aliquam posuere turpis vel mauris semper tincidunt. Vestibulum eget tellus interdum, vulputate lectus in, posuere quam. Nunc eleifend, massa sit amet feugiat venenatis, sapien dui efficitur mi, vitae posuere lectus ex ac velit. Vestibulum euismod, est ac mattis sollicitudin, urna dolor lobortis orci, eu porta nunc ex lobortis sapien. Sed magna lacus, cursus commodo erat non, iaculis rutrum metus. Nullam a ipsum elit. Nulla semper rhoncus blandit. Vivamus mollis sodales est ut ultricies. Nunc sit amet tellus ullamcorper felis eleifend fringilla. Donec dui dui, pretium sit amet interdum quis, eleifend posuere orci. Nulla blandit pellentesque arcu, nec laoreet felis porta sit amet. Suspendisse feugiat, quam ut tincidunt mollis, metus mi feugiat augue, id rutrum metus risus ut ante. Suspendisse convallis, turpis eget feugiat fermentum, quam lectus tempor sem, vitae semper turpis neque ac nunc. Nulla sed ex vel tellus efficitur eleifend eget ac sapien. 
-</p>
-
-<a href="{{url_for('survey.survey', survey_name="main_survey", page=0)}}">Survey</a>
+<ul>
+    {% for survey, survey_link_name in surveys %}
+	<li><a href="{{url_for('survey.survey', survey_name=survey, page=0)}}">{{ survey_link_name }}</a></li>
+    {% endfor %}
+</ul>
 {% endblock %}
