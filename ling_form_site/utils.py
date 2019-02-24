@@ -16,12 +16,16 @@ def generate_survey_form(survey_path):
             q_name = question["name"]
             q_text = question["question"]
 
+            if "required" in question and question["required"] == "false":
+                validators_to_use = []
+            else:
+                validators_to_use = [validators.InputRequired(message="This question is required")]
+
             if "validators" in question:
                 #This hellish comprehension makes a list of validator objects
                 #with a given name, and their associated parameters
-                validators_to_use = [getattr(validators, validator)(**params) for validator, params in question["validators"].items()]
-            else:
-                validators_to_use = []
+                validators_to_use += [getattr(validators, validator)(**params) for validator, params in question["validators"].items()]
+
             if q_type == "multiple_choice":
                 q_answers = question["answers"]
                 field = SelectMultipleField(q_text, validators_to_use, choices=[(str(i), str(x)) for i, x in enumerate(q_answers)], \
