@@ -1,6 +1,6 @@
 import os
 import json
-from wtforms import Form, RadioField, SelectMultipleField, SelectField, TextAreaField, HiddenField, StringField
+from wtforms import Form, RadioField, SelectMultipleField, SelectField, TextAreaField, HiddenField, StringField, IntegerField
 from wtforms.widgets import CheckboxInput, ListWidget
 
 def generate_survey_form(survey_path):
@@ -15,6 +15,8 @@ def generate_survey_form(survey_path):
             q_type = question["type"]
             q_name = question["name"]
             q_text = question["question"]
+            if "validators" in question:
+                pass
 
             if q_type == "multiple_choice":
                 q_answers = question["answers"]
@@ -26,6 +28,8 @@ def generate_survey_form(survey_path):
                 field = RadioField(q_text, choices=[(str(i), str(x)) for i, x in enumerate(q_answers)])
             elif q_type == "string":
                 field = StringField(q_text)
+            elif q_type == "integer":
+                field = IntegerField(q_text)
             elif q_type == "textbox":
                 field = TextAreaField(q_text)
             elif q_type == "dropdown":
