@@ -89,8 +89,6 @@ def survey(survey_name, page):
         survey_form = form[page](request.form)
         if survey_form.validate():
             for q in response["pages"][page]:
-                if q["type"] == "recording":
-                    continue
                 q["answer"] = getattr(survey_form, q["name"]).data
 
             survey_response.response = json.dumps(response)
@@ -150,7 +148,9 @@ def upload_audio(survey_name, recording):
     for page in response["pages"]:
         for q in page:
             if q["name"] == recording:
-                q["answer"] = file_path
+                q["file_path"] = file_path
+                if q["type"] == "recording":
+                    q["answer"] = "completed";
                 found = True
                 break
         if found:
