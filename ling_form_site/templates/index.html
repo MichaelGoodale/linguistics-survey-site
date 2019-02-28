@@ -1,16 +1,27 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>{% block title %}Home{% endblock %}</h1>
+  <div class="col-md-8">
+    <h1>{% block title %}Home{% endblock %}</h1>
+  </div>
 {% endblock %}
 
 {% block content %}
-<p>
-This website contains various linguistic surveys that can be completed in order to help scientific understanding of language.
-</p>
-<ul>
-    {% for survey, survey_link_name in surveys %}
-	<li><a href="{{url_for('survey.survey', survey_name=survey, page=0)}}">{{ survey_link_name }}</a></li>
-    {% endfor %}
-</ul>
+<div class="col-md-8">
+	<div class="row">
+	<p>
+	This website contains various linguistic surveys that can be completed in order to help scientific understanding of language.
+	</p>
+	<div class="row mx-auto">
+	  <div class="card" style="width: 18rem;">
+	  <ul class="list-group list-group-flush">
+	      {% for survey, survey_link_name in surveys %}
+	  	<li class="list-group-item">
+	  	<a href="{{url_for('survey.survey', survey_name=survey, page=0)}}">{{ survey_link_name }}</a>
+	  	</li>
+	      {% endfor %}
+	  </ul>
+	  </div>
+	</div>
+</div>
 {% endblock %}

@@ -1,15 +1,20 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>{% block title %}Register{% endblock %}</h1>
+  <div class="col-md-8">
+  <h1>{% block title %}Survey complete!{% endblock %}</h1>
+  </div>
 {% endblock %}
 
 {% block content %}
-
-<p>
-Thank you for participating in this survey
-</p>
-
-<a href="{{url_for('survey.index')}}">Return to main page</a>
-
+<div class="col-md-8">
+	<div class="row">
+	<p>
+	Thank you for participating in this survey
+	</p>
+	</div>
+	<div class="row">
+        <a href="{{url_for('survey.index')}}">Return to main page</a>
+        </div>
+</div>
 {% endblock %}

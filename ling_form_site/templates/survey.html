@@ -1,27 +1,36 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>{% block title %}Register{% endblock %}</h1>
+<h1>{% block title %}Page {{ page+1 }}{% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
 <script type="text/javascript" src="{{ url_for('static', filename='js/audiorecorder.js')}}"></script>
 {% from "_formmacros.html" import render_recorder, render_field%}
 <form method="POST" enctype="multipart/form-data">
-  <dl>
-    {% for field in form%}
-      {{ render_field(field) }}
-    {% endfor %}
-  </dl>
+  {% for field in form%}
+    {{ render_field(field) }}
+  {% endfor %}
+  <div class="row">
   {% if page == number_pages -1 %}
+    <div class="col">
     <input type=submit name="submit" value="Previous page">
+    </div>
+    <div class="col">
     <input type=submit name="submit" value="Submit">
+    </div>
   {% elif page == 0 %}
     <input type=submit name="submit" value="Next page">
+    </div>
   {% else %}
+    <div class="col">
     <input type=submit name="submit" value="Previous page">
+    </div>
+    <div class="col">
     <input type=submit name="submit" value="Next page">
+    </div>
   {% endif %}
+  </div>
 </form>
 <div id="survey_name" data-survey_name="{{ survey_name }}" style="display: none;"></div>
 {% endblock %}

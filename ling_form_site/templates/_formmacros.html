@@ -1,49 +1,60 @@
 {% macro render_recorder(recorder) %}
-<div id="{{ recorder.name }}-finished" style="display:{{ '' if recorder.data is not none else 'none' }}">
-	(Recorded)
+<div class="card text-center" style="width: 18rem;">
+	<div class="card-body">
+	<p id="{{ recorder.name }}-finished" style="display:{{ '' if recorder.data is not none else 'none' }}"> (Recorded) </p>
+	<input class="btn btn-primary" type="button" id="{{ recorder.name }}-button" onclick="record_audio('{{ recorder.name }}')" value="Record"></input>
+	</div>
 </div>
-<input type="button" id="{{ recorder.name }}-button" onclick="record_audio('{{ recorder.name }}')" value="Record"></input>
 {% endmacro %}
 
 {% macro render_word_list(word_list) %}
-<div>
-	<span id="{{ word_list.name }}-words" > Word </span>
+<div class="card text-center" style="width: 18rem;">
+	<div class="card-body">
+	<h1 class="card-title"><span id="{{ word_list.name }}-words" > </span></h1>
+	<p id="{{ word_list.name }}-finished" style="display:{{ '' if word_list.data is not none else 'none' }}"> (Recorded) </p>
+	<input class="btn btn-primary" type="button" id="{{ word_list.name }}-button" onclick="create_word_list('{{ word_list.name }}')" value="Begin"></input>
+	</div>
 </div>
-
-<div id="{{ word_list.name }}-finished" style="display:{{ '' if word_list.data is not none else 'none' }}">
-	(Recorded)
-</div>
-<input type="button" id="{{ word_list.name }}-button" onclick="create_word_list('{{ word_list.name }}')" value="Record"></input>
 {% endmacro %}
 
 {% macro render_field(field) %}
-  <dt>{{ field.label }}
-  <dd>
+  <div class="row">
+  <div class="form-group col-md-8">
+  <div class="row">
+  {{ field.label }}
+  </div>
   {% if field.render_kw['data-type'] == 'likert' %}
-    <table>
+  <div class="row">
+    <table class="table col-md-6" style="table-layout: fixed;">
+    <thead> 
       <tr>
       {% for i in range(field.choices|length) %}
         {% if i == 0 %}
-	<th> {{ field.render_kw['data-min'] }} </th>
+	<th class="text-left"> {{ field.render_kw['data-min'] }} </th>
 	{% elif i == (field.choices|length) -1 %}
-	<th> {{ field.render_kw['data-max'] }} </th>
+	<th class="text-right"> {{ field.render_kw['data-max'] }} </th>
 	{% else %}
 	<th> </th>
 	{% endif %}
       {% endfor %}
       </tr>
+    </thead>
+    <tbody>
       <tr>
       {% for subfield in field %}
-        <td>{{ subfield }}</td>
+        <td class="text-center">{{ subfield }}</td>
       {% endfor %}
       </tr>
       <tr>
       {% for subfield in field %}
-        <td>{{ subfield.label }}</td>
+        <td class="text-center">{{ subfield.label }}</td>
       {% endfor %}
       </tr>
+    </tbody>
     </table>
+   </div>
   {% else %}
+    <div class="row">
     {{ field(**kwargs)|safe }}
     {% if field.type  == "HiddenField" %}
       {% if field.render_kw['data-type'] == 'wordlist' %}
@@ -52,14 +63,17 @@
         {{ render_recorder(field) }}
       {% endif %}
     {% endif %}
+    </div>
   {% endif %}
-
   {% if field.errors %}
-    <ul class=errors>
+    <div class="row">
+    <ul class="list-group">
     {% for error in field.errors %}
-      <li>{{ error }}</li>
+      <li class="list-group-item list-group-item-danger">{{ error }}</li>
     {% endfor %}
     </ul>
+    </div>
   {% endif %}
-  </dd>
+  </div>
+  </div>
 {% endmacro %}

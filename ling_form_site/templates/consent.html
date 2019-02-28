@@ -1,32 +1,46 @@
 {% extends 'base.html' %}
 
 {% block header %}
+  <div class="col-md-8">
 <h1>{% block title %} Statement of informed consent {% endblock %} to participate in research</h1>
+  </div>
 {% endblock %}
 
 {% block content %}
+<div class="col-md-8">
+<div class="row">
 I, the undersigned, understand that:
 
-<ul>
-	<li> I am about to participate in a study which is being conducted by Michael Goodale
+<ul class="list-group">
+	<li class="list-group-item"> I am about to participate in a study which is being conducted by Michael Goodale
 	at the Linguistics Department of McGill University, and that the purpose of this research is to
 	investigate how people pronounce different vowels across Canada and the United States. </li>
-	<li> My participation in this study will entail answering questions about myself and my English use, as well as recording myself reading some English texts.</li>
-	<li> My participation in this study is voluntary and that no penalty or disadvantage will accrue to me for non-participation, nor any benefit for participation </li>
-	<li> I may withdraw from the study at any time and may refuse to answer any question I am asked.</li>
-	<li> I may participate anonymously or under a pseudonym and will not be asked my name during the interview. No record will be kept of my name if I wish to remain anonymous. </li>
-	<li> Even if anonymity is not important to me and I give my name to the interviewer, my name will never be revealed in written or oral presentations of the study and will never be associated publicly with any data from my interview.</li>
-	<li> Portions of my interview may be played in linguistics classes or conference presentations, or transcribed in written reports, for demonstration purposes connected with linguistic analysis.</li>
-	<li> Additional copies of my interview recording may be made for back-up purposes.</li>
-	<li> The original recording and all copies of it will be accessible only to Michael Goodale,
+	<li class="list-group-item"> My participation in this study will entail answering questions about myself and my English use, as well as recording myself reading some English texts.</li>
+	<li class="list-group-item"> My participation in this study is voluntary and that no penalty or disadvantage will accrue to me for non-participation, nor any benefit for participation </li>
+	<li class="list-group-item"> I may withdraw from the study at any time and may refuse to answer any question I am asked.</li>
+	<li class="list-group-item"> I may participate anonymously or under a pseudonym and will not be asked my name during the interview. No record will be kept of my name if I wish to remain anonymous. </li>
+	<li class="list-group-item"> Even if anonymity is not important to me and I give my name to the interviewer, my name will never be revealed in written or oral presentations of the study and will never be associated publicly with any data from my interview.</li>
+	<li class="list-group-item"> Portions of my interview may be played in linguistics classes or conference presentations, or transcribed in written reports, for demonstration purposes connected with linguistic analysis.</li>
+	<li class="list-group-item"> Additional copies of my interview recording may be made for back-up purposes.</li>
+	<li class="list-group-item"> The original recording and all copies of it will be accessible only to Michael Goodale,
 	will be used only for linguistic analysis (including in presentations as mentioned above), and
 	will be kept in a password-protected server.  </li>
-	<li> I may contact Michael Goodale at michael.goodale@mail.mcgill.ca if I have any questions or concerns relating to this project or to my participation in it.</li>
+	<li class="list-group-item"> I may contact Michael Goodale at michael.goodale@mail.mcgill.ca if I have any questions or concerns relating to this project or to my participation in it.</li>
 </ul>
-	
+</div>	
 
+<div class="row ">
+<div class="col-md-10 mx-auto">
 <form method="POST">
-	<input type="checkbox" name="consent" value="consented"> I certify that I have read and understood the foregoing terms and conditions and that I agree to participate, in accordance with them, in the above-named study.  </br>
-	<input type=submit name="submit" value="Continue">
+	<div class = "row mx-auto">
+		<div class="col-md-1"> <input type="checkbox" name="consent" value="consented"> </div> 
+		<div class="col-md-9"> <p> I certify that I have read and understood the foregoing terms and conditions and that I agree to participate, in accordance with them, in the above-named study. </p> </div>
+	</div>
+	<div class = "row">
+	<input class="btn btn-primary mx-auto" type=submit name="submit" value="Continue">
+	</div>
 </form>
+</div>
+</div>
+</div>
 {% endblock %}
