@@ -49,7 +49,9 @@ def generate_survey_form(survey_path):
                 q_answers = question["answers"]
                 field = SelectField(q_text, validators_to_use, choices=[(None, '')]+[(str(i), str(x)) for i, x in enumerate(q_answers)])
             elif q_type == "recording":
-                field = HiddenField(q_text)
+                field = HiddenField(q_text, render_kw={"data-type": "recording"})
+            elif q_type == "wordlist":
+                field = HiddenField(q_text, render_kw={"data-type": "wordlist", "data-word_list": question["words"]})
             else:
                 raise KeyError(f"Question type {q_type} for {q_name} is not yet implemented")
             setattr(F, q_name, field)
