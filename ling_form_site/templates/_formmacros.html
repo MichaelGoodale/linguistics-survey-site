@@ -1,8 +1,8 @@
 {% macro render_recorder(recorder) %}
 <div class="card text-center" style="width: 18rem;">
 	<div class="card-body">
-	<p id="{{ recorder.name }}-finished" style="display:{{ '' if recorder.data is not none else 'none' }}"> (Recorded) </p>
-	<input class="btn btn-primary" type="button" id="{{ recorder.name }}-button" onclick="record_audio('{{ recorder.name }}')" value="Record"></input>
+	<p class="card-text">{{recorder.render_kw["data-prompt"]}}</p>
+	<input class="btn btn-primary" type="button" id="{{ recorder.name }}-button" onclick="record_audio('{{ recorder.name }}')" value="{{ 'Re-record' if recorder.data is not none else 'Record' }}"></input>
 	</div>
 </div>
 {% endmacro %}
@@ -10,9 +10,8 @@
 {% macro render_word_list(word_list) %}
 <div class="card text-center" style="width: 18rem;">
 	<div class="card-body">
-	<h1 class="card-title"><span id="{{ word_list.name }}-words" > </span></h1>
-	<p id="{{ word_list.name }}-finished" style="display:{{ '' if word_list.data is not none else 'none' }}"> (Recorded) </p>
-	<input class="btn btn-primary" type="button" id="{{ word_list.name }}-button" onclick="create_word_list('{{ word_list.name }}')" value="Begin"></input>
+	<h1 class="card-title"><span id="{{ word_list.name }}-words" >{{ 'Done!' if word_list.data is not none else '' }}</span></h1>
+	<input class="btn btn-primary" type="button" id="{{ word_list.name }}-button" onclick="create_word_list('{{ word_list.name }}')" value="{{ 'Re-record' if word_list.data is not none else 'Begin' }}"></input>
 	</div>
 </div>
 {% endmacro %}
@@ -59,8 +58,9 @@
     {% if field.type  == "HiddenField" %}
       {% if field.render_kw['data-type'] == 'wordlist' %}
         {{ render_word_list(field) }}
-      {% else %}
+      {% elif field.render_kw['data-type'] == 'reading' %}
         {{ render_recorder(field) }}
+      {% else %}
       {% endif %}
     {% endif %}
     </div>

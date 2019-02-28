@@ -57,8 +57,8 @@ def generate_survey_form(survey_path):
                 q_answers = question["answers"]
                 field = SelectField(q_text, validators_to_use, choices=[(None, '')]+[(str(i), str(x)) for i, x in enumerate(q_answers)], \
                         render_kw={"data-type": "dropdown"})
-            elif q_type == "recording":
-                field = HiddenField(q_text, render_kw={"data-type": "recording"})
+            elif q_type == "reading":
+                field = HiddenField(q_text, render_kw={"data-type": "reading", "data-prompt": question["prompt"]})
             elif q_type == "wordlist":
                 field = HiddenField(q_text, render_kw={"data-type": "wordlist", "data-word_list": question["words"]})
             else:

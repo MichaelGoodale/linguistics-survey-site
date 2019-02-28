@@ -43,7 +43,8 @@ function create_word_list(word_list) {
 
 	let button = document.getElementById(`${word_list}-button`);
 	button.value = "Next word";
-	button.style.background = "red";
+	button.classList.add('btn-danger');
+	button.classList.remove('btn-primary');
 	let chunks = [];
 	mediaRecorder.start();
 	
@@ -58,8 +59,11 @@ function create_word_list(word_list) {
 			document.getElementById(word_list).value = word_times;
 			word_span.innerHTML = "Done!"
 			mediaRecorder.stop()
-			button.style.background = "";
-			button.value = "Record";
+			button.classList.add('btn-primary');
+			button.classList.remove('btn-danger');
+			button.value = "Re-record";
+		        button.disabled = true;
+		        setTimeout(() => button.disabled = false, 3000);
 			button.onclick = function() {
 				create_word_list(word_list);
 			}
@@ -72,8 +76,6 @@ function create_word_list(word_list) {
 	mediaRecorder.onstop = function(e) {
 		const buffer = new Blob(chunks, { 'type' : 'audio/wav' });
 		upload_file(buffer, word_list);
-		let recorded = document.getElementById(`${word_list}-finished`);
-		recorded.style.display = "";
 		is_recording = false;
 	}
 
@@ -97,15 +99,19 @@ function record_audio(recording) {
 
 	let button = document.getElementById(`${recording}-button`);
 	button.value = "Finish recording";
-	button.style.background = "red";
+	button.classList.add('btn-danger');
+	button.classList.remove('btn-primary');
 	let chunks = [];
 	mediaRecorder.start();
 	
 
 	button.onclick = function () {
 		mediaRecorder.stop()
-		button.style.background = "";
-		button.value = "Record";
+		button.value = "Re-record";
+		button.classList.remove('btn-danger');
+		button.classList.add('btn-primary');
+		button.disabled = true;
+		setTimeout(() => button.disabled = false, 3000);
 		button.onclick = function() {
 			record_audio(recording);
 		}
@@ -115,8 +121,6 @@ function record_audio(recording) {
 		console.log(`recording:${recording} stopped`);
 		const buffer = new Blob(chunks, { 'type' : 'audio/wav' });
 		upload_file(buffer, recording);
-		let recorded = document.getElementById(`${recording}-finished`);
-		recorded.style.display = "";
 		is_recording = false;
 	}
 
