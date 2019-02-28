@@ -13,7 +13,7 @@
 <div id="{{ word_list.name }}-finished" style="display:{{ '' if word_list.data is not none else 'none' }}">
 	(Recorded)
 </div>
-<input type="button" id="{{ word_list.name }}-button" onclick="record_audio('{{ word_list.name }}')" value="Record"></input>
+<input type="button" id="{{ word_list.name }}-button" onclick="create_word_list('{{ word_list.name }}')" value="Record"></input>
 {% endmacro %}
 
 {% macro render_field(field) %}
