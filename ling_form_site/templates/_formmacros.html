@@ -1,5 +1,5 @@
 {% macro render_recorder(recorder) %}
-<div class="card text-center" style="width: 18rem;">
+<div class="card text-center">
 	<div class="card-body">
 	<p class="card-text">{{recorder.render_kw["data-prompt"]}}</p>
 	<input class="btn btn-primary" type="button" id="{{ recorder.name }}-button" onclick="record_audio('{{ recorder.name }}')" value="{{ 'Re-record' if recorder.data is not none else 'Record' }}"></input>
@@ -8,7 +8,7 @@
 {% endmacro %}
 
 {% macro render_word_list(word_list) %}
-<div class="card text-center" style="width: 18rem;">
+<div class="card text-center">
 	<div class="card-body">
 	<h1 class="card-title"><span id="{{ word_list.name }}-words" >{{ 'Done!' if word_list.data is not none else '' }}</span></h1>
 	<input class="btn btn-primary" type="button" id="{{ word_list.name }}-button" onclick="create_word_list('{{ word_list.name }}')" value="{{ 'Re-record' if word_list.data is not none else 'Begin' }}"></input>
@@ -59,6 +59,9 @@
     {{ field(**kwargs)|safe }}
     </div>
     <div class="row">
+    <div class="col-md-2">
+    </div>
+    <div class="col-md-4">
     {% if field.type  == "HiddenField" %}
       {% if field.render_kw['data-type'] == 'wordlist' %}
         {{ render_word_list(field) }}
@@ -67,6 +70,9 @@
       {% else %}
       {% endif %}
     {% endif %}
+    </div>
+    <div class="col-md-2">
+    </div>
     </div>
   {% endif %}
   {% if field.errors %}
