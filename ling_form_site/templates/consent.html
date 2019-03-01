@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <div class="col-md-8">
-<h1>{% block title %} Statement of informed consent {% endblock %} to participate in research</h1>
+  <div class="col text-center">
+	<h1>{% block title %} Statement of informed consent {% endblock %} to participate in research</h1>
   </div>
 {% endblock %}
 
 {% block content %}
-<div class="col-md-8">
+<div class="col">
 <div class="row">
 I, the undersigned, understand that:
 
@@ -29,18 +29,18 @@ I, the undersigned, understand that:
 </ul>
 </div>	
 
-<div class="row ">
-<div class="col-md-10 mx-auto">
+<div class="row">
 <form method="POST">
-	<div class = "row mx-auto">
+	<div class = "row">
+		<div class="col-md-2"> </div> 
 		<div class="col-md-1"> <input type="checkbox" name="consent" value="consented"> </div> 
-		<div class="col-md-9"> <p> I certify that I have read and understood the foregoing terms and conditions and that I agree to participate, in accordance with them, in the above-named study. </p> </div>
+		<div class="col-md-6"> <p> I certify that I have read and understood the foregoing terms and conditions and that I agree to participate, in accordance with them, in the above-named study. </p> </div>
+		<div class="col-md-1"> </div> 
 	</div>
 	<div class = "row">
-	<input class="btn btn-primary mx-auto" type=submit name="submit" value="Continue">
+		<input class="btn btn-primary mx-auto" type=submit name="submit" value="Continue">
 	</div>
 </form>
-</div>
 </div>
 </div>
 {% endblock %}

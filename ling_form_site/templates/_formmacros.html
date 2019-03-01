@@ -18,13 +18,13 @@
 
 {% macro render_field(field) %}
   <div class="row">
-  <div class="form-group col-md-8 mx-auto">
+  <div class="form-group col">
   <div class="row">
   {{ field.label }}
   </div>
   {% if field.render_kw['data-type'] == 'likert' %}
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-8">
     <table class="table" style="table-layout: fixed;">
     <thead> 
       <tr>
@@ -57,6 +57,8 @@
   {% else %}
     <div class="row">
     {{ field(**kwargs)|safe }}
+    </div>
+    <div class="row">
     {% if field.type  == "HiddenField" %}
       {% if field.render_kw['data-type'] == 'wordlist' %}
         {{ render_word_list(field) }}
