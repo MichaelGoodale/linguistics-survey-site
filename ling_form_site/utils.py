@@ -33,19 +33,19 @@ def generate_survey_form(survey_path):
 
             if q_type == "multiple_choice":
                 q_answers = question["answers"]
-                field = SelectMultipleField(q_text, validators_to_use, choices=[(str(i), str(x)) for i, x in enumerate(q_answers)], \
+                field = SelectMultipleField(q_text, validators_to_use, choices=[(str(x), str(x)) for i, x in enumerate(q_answers)], \
                         option_widget=CheckboxInput(),
                         widget=ListWidget(prefix_label=False),
                         render_kw={"data-type": "multiple_choice"})
             elif q_type == "single_choice":
                 q_answers = question["answers"]
-                field = RadioField(q_text, validators_to_use, choices=[(str(i), str(x)) for i, x in enumerate(q_answers)], \
+                field = RadioField(q_text, validators_to_use, choices=[(str(x), str(x)) for i, x in enumerate(q_answers)], \
                        render_kw={"data-type": "single_choice"})
             elif q_type == "likert":
                 q_answers = question["answers"]
                 min_label = question["minmax"][0]
                 max_label = question["minmax"][1]
-                field = RadioField(q_text, validators_to_use, choices=[(str(i), str(x)) for i, x in enumerate(q_answers)], \
+                field = RadioField(q_text, validators_to_use, choices=[(str(x), str(x)) for i, x in enumerate(q_answers)], \
                        render_kw={"data-type": "likert", "data-min": min_label, "data-max":max_label})
             elif q_type == "string":
                 field = StringField(q_text, validators_to_use, render_kw={"data-type": "string"})
@@ -55,7 +55,7 @@ def generate_survey_form(survey_path):
                 field = TextAreaField(q_text, validators_to_use, render_kw={"data-type": "textbox"})
             elif q_type == "dropdown":
                 q_answers = question["answers"]
-                field = SelectField(q_text, validators_to_use, choices=[(None, '')]+[(str(i), str(x)) for i, x in enumerate(q_answers)], \
+                field = SelectField(q_text, validators_to_use, choices=[(None, '')]+[(str(x), str(x)) for i, x in enumerate(q_answers)], \
                         render_kw={"data-type": "dropdown"})
             elif q_type == "reading":
                 field = HiddenField(q_text, validators_to_use, render_kw={"data-type": "reading", "data-prompt": question["prompt"]})
