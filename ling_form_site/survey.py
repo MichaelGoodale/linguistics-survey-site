@@ -1,5 +1,6 @@
 import os
 import json
+from datetime import datetime
 
 from flask import Flask, render_template, redirect, url_for, Blueprint, session, request, current_app, abort
 from wtforms import BooleanField, StringField, PasswordField, validators
@@ -109,6 +110,7 @@ def success(survey_name):
     user = db_session.query(User).filter(User.uuid == session['user_id']).first()
     survey_response = get_survey_response(user, survey_name)
     survey_response.completed = True
+    survey_response.submitted_at = datetime.utcnow()
     db_session.commit()
     return render_template('success.html')
 
