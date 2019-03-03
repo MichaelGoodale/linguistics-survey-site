@@ -1,8 +1,8 @@
 {% macro render_recorder(recorder) %}
-<div class="card text-center">
+<div class="card">
+	<div class="card-header"><input class="btn btn-primary" type="button" id="{{ recorder.name }}-button" onclick="record_audio('{{ recorder.name }}')" value="{{ 'Re-record' if recorder.data == 'completed' else 'Record' }}"></input></div>
 	<div class="card-body">
 	<p class="card-text">{{recorder.render_kw["data-prompt"]}}</p>
-	<input class="btn btn-primary" type="button" id="{{ recorder.name }}-button" onclick="record_audio('{{ recorder.name }}')" value="{{ 'Re-record' if recorder.data is not none else 'Record' }}"></input>
 	</div>
 </div>
 {% endmacro %}
@@ -11,7 +11,7 @@
 <div class="card text-center">
 	<div class="card-body">
 	<h1 class="card-title"><span id="{{ word_list.name }}-words" >{{ 'Done!' if word_list.data is not none else '' }}</span></h1>
-	<input class="btn btn-primary" type="button" id="{{ word_list.name }}-button" onclick="create_word_list('{{ word_list.name }}')" value="{{ 'Re-record' if word_list.data is not none else 'Begin' }}"></input>
+	<input class="btn btn-primary" type="button" id="{{ word_list.name }}-button" onclick="create_word_list('{{ word_list.name }}')" value="{{ 'Re-record' if word_list.data == 'completed' else 'Begin' }}"></input>
 	</div>
 </div>
 {% endmacro %}
@@ -22,6 +22,15 @@
   <div class="row">
   {{ field.label }}
   </div>
+  {% if field.errors %}
+    <div class="row">
+    <ul class="list-group">
+    {% for error in field.errors %}
+      <li class="list-group-item list-group-item-danger">{{ error }}</li>
+    {% endfor %}
+    </ul>
+    </div>
+  {% endif %}
   {% if field.render_kw['data-type'] == 'likert' %}
   <div class="row">
     <div class="col-md-8">
@@ -59,29 +68,21 @@
     {{ field(**kwargs)|safe }}
     </div>
     <div class="row">
-    <div class="col-md-2">
-    </div>
-    <div class="col-md-4">
     {% if field.type  == "HiddenField" %}
       {% if field.render_kw['data-type'] == 'wordlist' %}
+	<div class="col-md-2">
+	</div>
+	<div class="col-md-4">
         {{ render_word_list(field) }}
+        </div>
+        <div class="col-md-2">
+        </div>
       {% elif field.render_kw['data-type'] == 'reading' %}
+	<div class="col-md-8">
         {{ render_recorder(field) }}
-      {% else %}
+        </div>
       {% endif %}
     {% endif %}
-    </div>
-    <div class="col-md-2">
-    </div>
-    </div>
-  {% endif %}
-  {% if field.errors %}
-    <div class="row">
-    <ul class="list-group">
-    {% for error in field.errors %}
-      <li class="list-group-item list-group-item-danger">{{ error }}</li>
-    {% endfor %}
-    </ul>
     </div>
   {% endif %}
   </div>
