@@ -3,6 +3,8 @@ let is_uploading = false;
 let survey_name = "";
 let next_buttons = document.getElementsByClassName("submit-page");
 
+let story_chunks = {};
+
 window.onload = () => {
 	survey_name = document.getElementById("survey_name").getAttribute('data-survey_name');
 }
@@ -95,6 +97,24 @@ function create_word_list(word_list) {
 	}
 }
 
+function stop_record_audio(recording) {
+	if (!is_recording) {
+		return false;
+	}
+	is_recording = true;
+	mediaRecorder.stop()
+	let stop_button = document.getElementById(`${recording}-stop-button`);
+	let start_button = document.getElementById(`${recording}-start-button`);
+	start_button.value = "Re-record";
+	start_button.classList.remove('btn-danger');
+	start_button.classList.add('btn-primary');
+	stop_button.classList.remove('btn-danger');
+	stop_button.classList.add('btn-primary');
+	setTimeout(() => start_button.disabled = false, 3000);
+	let form_field = document.getElementById(`${recording}`);
+	form_field.value = "completed";
+}
+
 function record_audio(recording) {
 	for (let b of next_buttons){
 		b.disabled = true;
@@ -111,36 +131,25 @@ function record_audio(recording) {
 
 	is_recording = true;
 
-	let button = document.getElementById(`${recording}-button`);
-	button.value = "Finish recording";
+	let button = document.getElementById(`${recording}-start-button`);
+	button.value = "Recording";
+	button.disabled = true;
 	button.classList.add('btn-danger');
 	button.classList.remove('btn-primary');
-	let chunks = [];
+	let stop_button = document.getElementById(`${recording}-stop-button`);
+	stop_button.classList.remove('btn-primary');
+	stop_button.classList.add('btn-danger');
+	story_chunks[recording] = [];
 	mediaRecorder.start();
-	
-
-	button.onclick = function () {
-		mediaRecorder.stop()
-		button.value = "Re-record";
-		button.classList.remove('btn-danger');
-		button.classList.add('btn-primary');
-		button.disabled = true;
-		setTimeout(() => button.disabled = false, 3000);
-		let form_field = document.getElementById(`${recording}`);
-		form_field.value = "completed";
-		button.onclick = function() {
-			record_audio(recording);
-		}
-	}
 
 	mediaRecorder.onstop = function(e) {
 		console.log(`recording:${recording} stopped`);
-		const buffer = new Blob(chunks, { 'type' : 'audio/wav' });
+		const buffer = new Blob(story_chunks[recording], { 'type' : 'audio/wav' });
 		upload_file(buffer, recording);
 		is_recording = false;
 	}
 
 	mediaRecorder.ondataavailable = function (e) {
-		chunks.push(e.data);
+		story_chunks[recording].push(e.data);
 	}
 }

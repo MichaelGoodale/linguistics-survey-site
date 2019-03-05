@@ -1,8 +1,11 @@
 {% macro render_recorder(recorder) %}
 <div class="card">
-	<div class="card-header"><input class="btn btn-primary" type="button" id="{{ recorder.name }}-button" onclick="record_audio('{{ recorder.name }}')" value="{{ 'Re-record' if recorder.data == 'completed' else 'Record' }}"></input></div>
+	<div class="card-header"><input class="btn btn-primary" type="button" id="{{ recorder.name }}-start-button" onclick="record_audio('{{ recorder.name }}')" value="{{ 'Re-record' if recorder.data == 'completed' else 'Record' }}"></input></div>
 	<div class="card-body">
 	<p class="card-text">{{recorder.render_kw["data-prompt"]}}</p>
+	</div>
+	<div class="card-footer">
+	<input class="btn btn-primary" type="button" id="{{ recorder.name }}-stop-button" onclick="stop_record_audio('{{ recorder.name }}')" value="Stop recording"></input></div>
 	</div>
 </div>
 {% endmacro %}
