@@ -1,12 +1,14 @@
 {% macro render_recorder(recorder) %}
+<div class="row">
 <div class="card">
 	<div class="card-header"><input class="btn btn-primary" type="button" id="{{ recorder.name }}-start-button" onclick="record_audio('{{ recorder.name }}')" value="{{ 'Re-record' if recorder.data == 'completed' else 'Record' }}"></input></div>
 	<div class="card-body">
-	<p class="card-text">{{recorder.render_kw["data-prompt"]}}</p>
+		<p class="card-text">{{recorder.render_kw["data-prompt"]}}</p>
 	</div>
 	<div class="card-footer">
-	<input class="btn btn-primary" type="button" id="{{ recorder.name }}-stop-button" onclick="stop_record_audio('{{ recorder.name }}')" value="Stop recording"></input></div>
+	<input class="btn btn-primary" type="button" id="{{ recorder.name }}-stop-button" onclick="stop_record_audio('{{ recorder.name }}')" value="Stop recording"></input>
 	</div>
+</div>
 </div>
 {% endmacro %}
 
@@ -74,11 +76,11 @@
     {% if field.type  == "HiddenField" %}
       {% if field.render_kw['data-type'] == 'wordlist' %}
 	<div class="col-md-2">
-	</div>
+        </div>
 	<div class="col-md-4">
         {{ render_word_list(field) }}
         </div>
-        <div class="col-md-2">
+	<div class="col-md-2">
         </div>
       {% elif field.render_kw['data-type'] == 'reading' %}
 	<div class="col-md-8">
