@@ -17,29 +17,23 @@
 	  {% if page == number_pages -1 %}
 	  <div class="row">
 	    <div class="col">
-	      <input class="btn btn-primary" type=submit name="submit" value="Previous page">
+	      <input class="submit-page btn btn-primary" type=submit name="submit" value="Previous page">
 	    </div>
 	    <div class="col">
-	      <input class="btn btn-primary" type=submit name="submit" value="Submit">
+	      <input class="submit-page btn btn-primary" type=submit name="submit" value="Submit">
 	    </div>
 	  </div>
 	  {% elif page == 0 %}
 	  <div class="row mx-auto">
-	      <div class="col-md-2">
-	      </div>
-	      <div class="col-md-4">
-	    <input class="btn btn-primary" type=submit name="submit" value="Next page">
-	      </div>
-	      <div class="col-md-2">
-	      </div>
+	      <input class="submit-page btn btn-primary" type=submit name="submit" value="Next page">
 	  </div>
 	  {% else %}
 	  <div class="row">
 	      <div class="col">
-	      <input class="btn btn-primary" type=submit name="submit" value="Previous page">
+	      <input class="submit-page btn btn-primary" type=submit name="submit" value="Previous page">
 	      </div>
 	      <div class="col">
-	      <input class="btn btn-primary" type=submit name="submit" value="Next page">
+	      <input class="submit-page btn btn-primary" type=submit name="submit" value="Next page">
 	      </div>
 	  </div>
 	  {% endif %}

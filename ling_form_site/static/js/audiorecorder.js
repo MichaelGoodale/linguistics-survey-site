@@ -1,6 +1,7 @@
-is_recording = false;
-is_uploading = false;
-survey_name = "";
+let is_recording = false;
+let is_uploading = false;
+let survey_name = "";
+let next_buttons = document.getElementsByClassName("submit-page");
 
 window.onload = () => {
 	survey_name = document.getElementById("survey_name").getAttribute('data-survey_name');
@@ -19,11 +20,19 @@ function upload_file(file, file_id) {
 	const formData = new FormData();
 	formData.append("recording", file);
 	xhr.open('POST', `/upload_audio/${survey_name}/${file_id}`);
-	xhr.onload = e => is_uploading = false;
+	xhr.onload = e => {
+		is_uploading = false;
+		for (let b of next_buttons){
+			b.disabled = false;
+		}
+	}
 	xhr.send(formData);
 }
 
 function create_word_list(word_list) {
+	for (let b of next_buttons){
+		b.disabled = true;
+	}
 	let word_span = document.getElementById(`${word_list}-words`);
 	let words = document.getElementById(word_list).dataset.word_list;
 	const re = /\'/gi;
@@ -89,6 +98,9 @@ function create_word_list(word_list) {
 }
 
 function record_audio(recording) {
+	for (let b of next_buttons){
+		b.disabled = true;
+	}
 	if (is_recording) {
 		return false;
 	}
