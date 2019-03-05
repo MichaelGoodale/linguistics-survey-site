@@ -16,14 +16,16 @@ navigator.mediaDevices.getUserMedia({audio: true, video: false})
 	    mediaRecorder.mimeType = 'audio/wav'
     });
 
-function upload_file(file, file_id) {
+function upload_file(file, file_id, btn_fn) {
 	is_uploading = true;
+	btn_fn();
 	const xhr = new XMLHttpRequest();
 	const formData = new FormData();
 	formData.append("recording", file);
 	xhr.open('POST', `/upload_audio/${survey_name}/${file_id}`);
 	xhr.onload = e => {
 		is_uploading = false;
+		btn_fn();
 		for (let b of next_buttons){
 			b.disabled = false;
 		}
@@ -64,17 +66,28 @@ function create_word_list(word_list) {
 	let begin_time = new Date();
 	word_times = [0]
 
+	let btn_fn = () => {
+		if(is_uploading){
+			button.value = "Uploading..."
+		}else if(is_uploading == false){
+			button.value = "Finished uploading!"
+		        setTimeout(() => {
+				button.disabled = false;
+			        button.value = "Re-record"}
+				, 3000);
+		}
+	};
+
 	button.onclick = function () {
 		word_times.push(new Date() - begin_time);
 		if (current_word_i == words.length -1){
+			is_uploading = true;
 			document.getElementById(word_list).value = word_times;
 			word_span.innerHTML = "Done!"
 		        setTimeout(() => mediaRecorder.stop(), 350);
 			button.classList.add('btn-primary');
 			button.classList.remove('btn-danger');
-			button.value = "Re-record";
 		        button.disabled = true;
-		        setTimeout(() => button.disabled = false, 3000);
 			button.onclick = function() {
 				create_word_list(word_list);
 			}
@@ -88,7 +101,7 @@ function create_word_list(word_list) {
 
 	mediaRecorder.onstop = function(e) {
 		const buffer = new Blob(chunks, { 'type' : 'audio/wav' });
-		upload_file(buffer, word_list);
+		upload_file(buffer, word_list, btn_fn);
 		is_recording = false;
 	}
 
@@ -101,16 +114,15 @@ function stop_record_audio(recording) {
 	if (!is_recording) {
 		return false;
 	}
-	is_recording = true;
+	is_recording = false;
 	mediaRecorder.stop()
 	let stop_button = document.getElementById(`${recording}-stop-button`);
 	let start_button = document.getElementById(`${recording}-start-button`);
-	start_button.value = "Re-record";
 	start_button.classList.remove('btn-danger');
 	start_button.classList.add('btn-primary');
 	stop_button.classList.remove('btn-danger');
 	stop_button.classList.add('btn-primary');
-	setTimeout(() => start_button.disabled = false, 3000);
+	stop_button.disabled = true;
 	let form_field = document.getElementById(`${recording}`);
 	form_field.value = "completed";
 }
@@ -137,15 +149,26 @@ function record_audio(recording) {
 	button.classList.add('btn-danger');
 	button.classList.remove('btn-primary');
 	let stop_button = document.getElementById(`${recording}-stop-button`);
+	stop_button.value = "Finish recording";
 	stop_button.classList.remove('btn-primary');
 	stop_button.classList.add('btn-danger');
+	stop_button.disabled = false;
 	story_chunks[recording] = [];
 	mediaRecorder.start();
+        
+	let btn_fn = () =>{
+		if(is_uploading){
+			stop_button.value = "Uploading..."
+		}else if(is_uploading == false){
+			stop_button.value = "Finished uploading!"
+			button.disabled = false;
+		}
+	};
 
 	mediaRecorder.onstop = function(e) {
 		console.log(`recording:${recording} stopped`);
 		const buffer = new Blob(story_chunks[recording], { 'type' : 'audio/wav' });
-		upload_file(buffer, recording);
+		upload_file(buffer, recording, btn_fn);
 		is_recording = false;
 	}
 
