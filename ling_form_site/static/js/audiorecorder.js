@@ -71,8 +71,6 @@ function create_word_list(word_list) {
 			button.classList.add('btn-primary');
 			button.classList.remove('btn-danger');
 			button.value = "Re-record";
-			let form_field = document.getElementById(`${word_list}`);
-			form_field.value = "completed";
 		        button.disabled = true;
 		        setTimeout(() => button.disabled = false, 3000);
 			button.onclick = function() {

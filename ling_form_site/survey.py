@@ -151,7 +151,7 @@ def upload_audio(survey_name, recording):
         for q in page:
             if q["name"] == recording:
                 q["file_path"] = file_path
-                if q["type"] == "recording":
+                if q["type"] == "reading":
                     q["answer"] = "completed";
                 found = True
                 break
