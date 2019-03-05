@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <div class="col">
+    <h1>{% block title %}Enable microphone{% endblock %}</h1>
+  </div>
+{% endblock %}
+
+{% block content %}
+<script type="text/javascript" src="{{ url_for('static', filename='js/microphone_check.js')}}"></script>
+<div class="col text-center">
+	<p>Please enable microphone access.</p>
+	<p><strong>Make sure to hit allow when your browser prompts you to grant permission.</strong>
+	<p>
+		<button class="btn btn-lg btn-primary" type="button" onclick="get_media_recorder()">Enable Microphone</button>
+	</p>
+	<p>
+		<form action="{{url_for('survey.survey', survey_name=survey_name, page=0)}}">
+                    <input id="survey-start" class="btn btn-secondary" type="submit" value="Begin survey" disabled/>
+                </form>
+	</p>
+</div>
+{% endblock %}
+

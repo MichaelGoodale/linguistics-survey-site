@@ -114,6 +114,10 @@ def success(survey_name):
     db_session.commit()
     return render_template('success.html')
 
+@bp.route('/microphone/<survey_name>/', methods=['GET', 'POST'])
+def microphone(survey_name):
+    return render_template('microphone.html', survey_name=survey_name)
+
 @bp.route('/consent/<survey_name>/', methods=['GET', 'POST'])
 def consent(survey_name):
     if request.method == 'POST':
@@ -130,7 +134,7 @@ def consent(survey_name):
 
             user.consent += survey_name+','
             db_session.commit()
-            return redirect(url_for("survey.survey", survey_name=survey_name, page=0))
+            return redirect(url_for("survey.microphone", survey_name=survey_name))
     return render_template('consent.html')
 
 @bp.route('/upload_audio/<survey_name>/<recording>', methods=['POST'])
