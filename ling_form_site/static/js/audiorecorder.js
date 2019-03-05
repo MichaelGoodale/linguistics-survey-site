@@ -69,7 +69,7 @@ function create_word_list(word_list) {
 		if (current_word_i == words.length -1){
 			document.getElementById(word_list).value = word_times;
 			word_span.innerHTML = "Done!"
-			mediaRecorder.stop()
+		        setTimeout(() => mediaRecorder.stop(), 350);
 			button.classList.add('btn-primary');
 			button.classList.remove('btn-danger');
 			button.value = "Re-record";
